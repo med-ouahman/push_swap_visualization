@@ -1,6 +1,6 @@
 const stackAEl = document.querySelector(".a");
 const stackBEl = document.querySelector(".b");
-
+const printInstructionsEl = document.querySelector(".print-instructions");
 const pa = document.getElementById("pa");
 const sa = document.getElementById("sa");
 const ra = document.getElementById("ra");
@@ -17,7 +17,6 @@ const instructionEl = document.getElementById("instructions");
 const INT_MAX = 2147483647;
 const INT_MIN = -2147483648;
 let inputs = "", stackA = [], stackB = [], instructions = 0;
-
 do
 {
 	inputs = prompt("Enter the numbers: ");
@@ -32,21 +31,32 @@ while (stackA.includes(null) || stackA.length !== [...new Set(stackA)].length);
 
 fillStack(stackA, stackAEl);
 
-function fillStack(nums, stack) {
-	stack.innerHTML = null;
-	for (let i = 0; i < nums.length; i++) {
-			const el = document.createElement("div");
-			el.classList.add("element");
-			el.textContent = nums[i];
-			stack.appendChild(el); 
+function fillStack(stack, stackEl) {
+	stackEl.innerHTML = null;
+	for (let i = 0; i < stack.length; i++) {
+		const el = document.createElement("div");
+		el.classList.add("element");
+		el.textContent = stack[i];
+		stackEl.appendChild(el); 
 	}
 	instructionEl.innerHTML = instructions;
+}
+
+function printInstructions(instruction) {
+	
+	printInstructionsEl.innerHTML +=
+	`
+	<div class="instruction">
+		<p>${instruction}</p>
+	</div>
+	`;
+	
 }
 
 function push(stackFrom, stackTo) {
 	if (stackFrom.length === 0)
 			return ;
-	stackTo.push(stackFrom.pop());
+	stackTo.unshift(stackFrom.shift());
 	++instructions;
 }
 
@@ -54,10 +64,7 @@ function swap(stack) {
 	const length = stack.length;
 	if (length < 2)
 			return ;
-	const last = stack[length - 1];
-	const secondLast = stack[length - 2];
-	stack[length - 1] = secondLast;
-	stack[length - 2] = last;
+	[stack[0], stack[1]] = [stack[1], stack[0]];
 	++instructions;
 }
 
@@ -85,45 +92,63 @@ function reverseRotate(stack) {
 }
 
 pa.addEventListener("click", () => {
+	if (stackB.length)
+		printInstructions("pa");
 	push(stackB, stackA);
 	fillStack(stackB, stackBEl);
 	fillStack(stackA, stackAEl);
+	
 });
 
 pb.addEventListener("click", () => {
+	if (stackA.length)
+		printInstructions("pb");
 	push(stackA, stackB);
 	fillStack(stackA, stackAEl);
 	fillStack(stackB, stackBEl);
+	
 });
 
 sa.addEventListener("click", () => {
 	swap(stackA);
 	fillStack(stackA, stackAEl);
+	if (stackA.length > 1)
+		printInstructions("sa");
 });
 
 sb.addEventListener("click", () => {
 	swap(stackB);
 	fillStack(stackB, stackBEl);
+	if (stackB.length > 1)
+		printInstructions("sb");
 });
 
 ra.addEventListener("click", () => {
 	rotate(stackA);
 	fillStack(stackA, stackAEl);
+	if (stackA.length > 1)
+		printInstructions("ra");
 });
 
 rb.addEventListener("click", () => {
 	rotate(stackB);
 	fillStack(stackB, stackBEl);
+	if (stackB.length > 1)
+		printInstructions("rb");
 });
 
 rra.addEventListener("click", () => {
 	reverseRotate(stackA);
 	fillStack(stackA, stackAEl);
+	if (stackA.length > 1)
+		printInstructions("rra");
 });
 
 rrb.addEventListener("click", () => {
 	reverseRotate(stackB);
 	fillStack(stackB, stackBEl);
+	if (stackB.length > 1)
+		printInstructions("rrb");
 });
 
 rr.addEventListener("click", () => {
@@ -131,6 +156,8 @@ rr.addEventListener("click", () => {
 	rotate(stackB);
 	fillStack(stackA, stackAEl);
 	fillStack(stackB, stackBEl);
+	if (stackA.length > 1 || stackB.length > 1)
+		printInstructions("rr");
 });
 
 ss.addEventListener("click", () => {
@@ -138,6 +165,8 @@ ss.addEventListener("click", () => {
 	swap(stackB);
 	fillStack(stackA, stackAEl);
 	fillStack(stackB, stackBEl);
+	if (stackA.length > 1 || stackB.length > 1)
+		printInstructions("ss");
 });
 
 rrr.addEventListener("click", () => {
@@ -145,4 +174,6 @@ rrr.addEventListener("click", () => {
 	reverseRotate(stackB);
 	fillStack(stackA, stackAEl);
 	fillStack(stackB, stackBEl);
+	if (stackA.length > 1 || stackB.length > 1)
+		printInstructions("rrr");
 });
