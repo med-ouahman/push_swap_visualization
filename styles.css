@@ -93,8 +93,25 @@ body {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: flex-start;
 	justify-content: space-between;
+}
+
+.container .insert-operations {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	align-self: flex-start;
+}
+
+.insert-operations button {
+	padding: .8em;
+	background: rgb(30, 122, 102);
+	border: 0;
+	color: #fff;
+	font-size: 1rem;
+	cursor: pointer;
 }
 
 .common {
